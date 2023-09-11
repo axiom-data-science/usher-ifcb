@@ -1,0 +1,6 @@
+name: usher-ifcb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - go
