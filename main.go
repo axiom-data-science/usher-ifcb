@@ -10,8 +10,12 @@ import (
 type IfcbFileMapper struct{}
 
 func (fm *IfcbFileMapper) GetFileDestPath(relSrcFile string, absSrcFile string,
-	baseSrcFile string, mappedRootSrcPath string, mappedRootDestPath string,
-	relToMappedRootSrcFile string) (string, error) {
+	baseSrcFile string, mappedRootSrcPath string, mappedRootDestPath string) (string, error) {
+	//allow root level metadata.csv files
+	if relSrcFile == "metadata.csv" {
+		return relSrcFile, nil
+	}
+
 	//D20230525T192231_IFCB162.adc
 	if baseSrcFile[0] != 'D' {
 		return "", errors.New("file " + relSrcFile + " does not start with D prefix, ignoring")
