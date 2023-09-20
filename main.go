@@ -4,6 +4,7 @@ import (
 	"axds.co/usher"
 	"errors"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -29,6 +30,17 @@ func (fm *IfcbFileMapper) GetFileDestPath(relSrcFile string, absSrcFile string,
 		return "", errors.New("couldn't parse date from file " + relSrcFile + ", ignoring")
 	}
 	destPath := fileTime.Format("2006/D20060102/") + baseSrcFile
+
+	//put beads in beads directory (if any directory
+	pathComponents := strings.Split(relSrcFile, "/")
+	pathComponents = pathComponents[:len(pathComponents)-1]
+	for _, pathComponent := range pathComponents {
+		if pathComponent == "beads" {
+			destPath = "beads/" + destPath
+			break
+		}
+	}
+
 	return destPath, nil
 }
 
