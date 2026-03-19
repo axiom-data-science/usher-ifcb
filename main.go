@@ -23,6 +23,11 @@ func (fm *IfcbFileMapper) GetFileDestPath(relSrcFile string, absSrcFile string,
 		return dataDir + "/" + relSrcFile, nil
 	}
 
+	//ignore *.filepart files (winscp partially transferred files)
+	if strings.HasSuffix(baseSrcFile, ".filepart") {
+		return "", nil
+	}
+
 	//example filename: D20230525T192231_IFCB162.adc
 	if baseSrcFile[0] != 'D' {
 		return "", errors.New("file " + relSrcFile + " does not start with D prefix, ignoring")
@@ -57,7 +62,7 @@ func (fm *IfcbFileMapper) GetFileDestPath(relSrcFile string, absSrcFile string,
 }
 
 func main() {
-  //run usher with a single ifcb mapper
+	//run usher with a single ifcb mapper
 	usher.Run(map[string]usher.FileMapper{
 		"ifcb": &IfcbFileMapper{},
 	})
